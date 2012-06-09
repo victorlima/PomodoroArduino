@@ -30,7 +30,7 @@ void setup() {
 void syncTime( ) {  
   secs++;
   setTime(secs);
-  if( secs == POMODORO_TIME )
+  if( secs == POMODORO_TIME / 1000 )
     pomodoroIsUp();
     
   digitalClockDisplay();  
@@ -55,6 +55,8 @@ void pomodoroIsUp( ) {
 
 void resetPomodoro( ) {
   secs = 0;
+  lcd.setCursor(0,0);
+  lcd.print("Time to Work...");
 }
 
 void loop() {    
