@@ -1,4 +1,4 @@
-Pomodoro---Arduino
+Pomodoro-Arduino
 ==================
 
 Simple LCD Pomodoro implementation for Arduino
