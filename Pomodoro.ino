@@ -2,7 +2,7 @@
 #include <Time.h>  
 #include <Timer.h>
 
-#define POMODORO_TIME 2700000 // 45 minutos of work...
+#define POMODORO_TIME 60000 //2700000 // 45 minutos of work...
 
 // initialize the library with the numbers of the interface pins
 LiquidCrystal lcd(7, 8, 9, 10, 11, 12);
@@ -51,9 +51,11 @@ void togglePomodoro( ) {
 void pomodoroIsUp( ) {
   lcd.setCursor(0,0);
   lcd.print("POMODORO!!!    ");
+  tone( 13, 445 );
 }
 
 void resetPomodoro( ) {
+  noTone( 13 );
   secs = 0;
   lcd.setCursor(0,0);
   lcd.print("Time to Work...");
