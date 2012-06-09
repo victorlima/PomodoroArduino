@@ -5,11 +5,12 @@
 #define POMODORO_TIME 2700000 // 45 minutos of work...
 
 // initialize the library with the numbers of the interface pins
-int buttonPin = 5;
 LiquidCrystal lcd(7, 8, 9, 10, 11, 12);
 Timer t;
 int state = 0, timer = -1;
 int secs = 0;
+int stopButtonPin = 5;
+int resetButtonPin = 4;
 
 void setup() {
   // set up the LCD's number of columns and rows: 
@@ -18,10 +19,9 @@ void setup() {
   lcd.print("Time to Work...");
   Serial.begin(9600); 
 
-  // setup button in pin 2
-  pinMode(buttonPin, INPUT); 
+  pinMode(stopButtonPin, INPUT); 
+  pinMode(resetButtonPin, INPUT); 
 
-  t.after( POMODORO_TIME, pomodoroIsUp );
   int timer = t.every( 1000, syncTime );
   
   state = 1;
@@ -30,6 +30,9 @@ void setup() {
 void syncTime( ) {  
   secs++;
   setTime(secs);
+  if( secs == POMODORO_TIME )
+    pomodoroIsUp();
+    
   digitalClockDisplay();  
 }
 
@@ -50,11 +53,20 @@ void pomodoroIsUp( ) {
   lcd.print("POMODORO!!!    ");
 }
 
+void resetPomodoro( ) {
+  secs = 0;
+}
+
 void loop() {    
-  int buttonState = digitalRead(buttonPin);
-  if (buttonState == HIGH) {     
+  int stopButtonState = digitalRead(stopButtonPin);
+  if (stopButtonState == HIGH) {     
     togglePomodoro();
   } 
+  
+  int resetButtonState = digitalRead(resetButtonPin);
+  if( resetButtonState == HIGH ) {
+    resetPomodoro();
+  }
 
   if( state == 1 )
     t.update();
